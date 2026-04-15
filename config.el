@@ -80,6 +80,13 @@
 ;; You can also try 'gd' (or 'C-c c d') to jump to their definition and see how
 ;; they are implemented.
 
+;; Custom global key bindings
+(map! :prefix "C-a"
+      "C-x" #'clipboard-kill-region
+      "C-c" #'clipboard-kill-ring-save
+      "C-v" #'clipboard-yank)
+
+
 ;; Switch between windows using meta + arrow keys
 (when (fboundp 'windmove-default-keybindings)
   (windmove-default-keybindings 'meta))
