@@ -15,7 +15,7 @@
 ;; - `doom-variable-pitch-font' -- a non-monospace font (where applicable)
 ;; - `doom-big-font' -- used for `doom-big-font-mode'; use this for
 ;;   presentations or streaming.
-;; - `doom-unicode-font' -- for unicode glyphs
+;; - `doom-symbol-font' -- for symbols
 ;; - `doom-serif-font' -- for the `fixed-pitch-serif' face
 ;;
 ;; See 'C-h v doom-font' for documentation and more examples of what they
@@ -34,10 +34,10 @@
 ;; There are two ways to load a theme. Both assume the theme is installed and
 ;; available. You can either set `doom-theme' or manually load a theme with the
 ;; `load-theme' function. This is the default:
-;(setq doom-theme 'doom-one)
+;;(setq doom-theme 'doom-one)
+;;(setq doom-theme 'doom-rouge)
+;;(setq doom-theme 'spacemacs-dark)
 (setq doom-theme 'modus-vivendi)
-;(setq doom-theme 'spacemacs-dark)
-
 
 ;; This determines the style of line numbers in effect. If set to `nil', line
 ;; numbers are disabled. For relative line numbers, set this to `relative'.
@@ -45,27 +45,26 @@
 
 ;; If you use `org' and don't want your org files in the default location below,
 ;; change `org-directory'. It must be set before org loads!
-(setq org-directory "~/Data/org/")
+(setq org-directory "~/share/org/")
 
 
 ;; Whenever you reconfigure a package, make sure to wrap your config in an
-;; `after!' block, otherwise Doom's defaults may override your settings. E.g.
+;; `with-eval-after-load' block, otherwise Doom's defaults may override your
+;; settings. E.g.
 ;;
-;;   (after! PACKAGE
+;;   (with-eval-after-load 'PACKAGE
 ;;     (setq x y))
 ;;
 ;; The exceptions to this rule:
 ;;
 ;;   - Setting file/directory variables (like `org-directory')
 ;;   - Setting variables which explicitly tell you to set them before their
-;;     package is loaded (see 'C-h v VARIABLE' to look up their documentation).
+;;     package is loaded (see 'C-h v VARIABLE' to look them up).
 ;;   - Setting doom variables (which start with 'doom-' or '+').
 ;;
 ;; Here are some additional functions/macros that will help you configure Doom.
 ;;
 ;; - `load!' for loading external *.el files relative to this one
-;; - `use-package!' for configuring packages
-;; - `after!' for running code after a package has loaded
 ;; - `add-load-path!' for adding directories to the `load-path', relative to
 ;;   this file. Emacs searches the `load-path' when you load packages with
 ;;   `require' or `use-package'.
@@ -96,23 +95,29 @@
 ;; Set only icons in toolbar
 (setq tool-bar-style 'image)
 
-;; Disable exit cofirmation
+;; Disable exit confirmation
 (setq confirm-kill-emacs nil)
 
-;; Enable showing word count in modeline.
+;; Enable showing word count in modeline
 (setq doom-modeline-enable-word-count t)
 
 ;; Add option in magit-log to use decorate without tags
-(after! magit
+(with-eval-after-load 'magit
   (transient-append-suffix 'magit-log "-D"
     '("=D" "Exclude tags" "--decorate-refs-exclude=refs/tags/*")))
 
 ;; Enable ssh authentication
-;; (after! doom-cli-env
+;; (with-eval-after-load 'doom-cli-env
 ;;   (add-to-list 'doom-env-allow "^SSH_"))
 
-;; Make TRAMP recognize customiations from the ~/.ssh/config file
-(after! tramp
+;; Add hook to system ssh agent
+;; (keychain-refresh-environment)
+;; (require 'exec-path-from-shell)
+;; (exec-path-from-shell-copy-env "SSH_AGENT_PID")
+;; (exec-path-from-shell-copy-env "SSH_AUTH_SOCK")
+
+;; Make TRAMP recognize customizations from the ~/.ssh/config file
+(with-eval-after-load 'tramp
   :config
   (customize-set-variable 'tramp-use-ssh-controlmaster-options nil))
 
@@ -128,13 +133,18 @@
                 ("\\.F08\\'" . f90-mode))
               auto-mode-alist))
 
+;; Add support for NCL files
+(setq auto-mode-alist (cons '("\.ncl$" . ncl-mode) auto-mode-alist))
+(autoload 'ncl-mode "~/.config/doom/emacs-packages/ncl.el")
+
 ;; Enable conda environments from mambaforge
-(setenv "WORKON_HOME" "/home/tomast/mambaforge/envs")
+(setenv "WORKON_HOME" "~/miniforge3/envs")
 ;; (pyvenv-workon "emacs_env")
 
 ;; Add LSP clients
-(after! eglot
+(with-eval-after-load 'eglot
   :config
   (add-hook 'f90-mode-hook 'eglot-ensure)
   (add-hook 'fortran-mode-hook 'eglot-ensure)
+  (add-hook 'python-mode-hook 'eglot-ensure)
   (set-eglot-client! 'python-mode '("pylsp")))
