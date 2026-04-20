@@ -1,0 +1,20 @@
+Set up (doom) emacs on a new machine
+------------------------------------
+https://valerioviperino.me/emacs-fresh-start/
+
+
+Ubuntu packages installed with apt:
+-----------------------------------
+
+texinfo
+libgtk-3-dev
+libglib2.0-dev
+libgccjit0
+libgccjit-11-dev
+build-essential
+libjansson4
+libjansson-dev
+libtree-sitter-dev
+gnutls-bin
+libgnutls
+libgnutls28-dev
