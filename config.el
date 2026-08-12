@@ -141,6 +141,13 @@
 (setenv "WORKON_HOME" "~/miniforge3/envs")
 ;; (pyvenv-workon "emacs_env")
 
+;; Prevent echo area from covering which-key popup (enable if echo area error returns)
+;(defadvice! fix-which-key--show-popup (fn act-popup-dim)
+;  :around #'which-key--show-popup
+;  (let ((height (car act-popup-dim))
+;        (width  (cdr act-popup-dim)))
+;    (funcall fn (cons (+ height 1) width))))
+
 ;; Add LSP clients
 (with-eval-after-load 'eglot
   :config
@@ -148,3 +155,38 @@
   (add-hook 'fortran-mode-hook 'eglot-ensure)
   (add-hook 'python-mode-hook 'eglot-ensure)
   (set-eglot-client! 'python-mode '("pylsp")))
+
+;; Include support for aidermacs
+(after! aidermacs
+  ;;:bind (("C-c a" . aidermacs-transient-menu))
+  (map! :map aidermacs-minor-mode-map "C-c a" #'aidermacs-transient-menu)
+  :config
+  ; Set API_KEY in .bashrc, that will automatically picked up by aider or in elisp
+  ;(setenv "ANTHROPIC_API_KEY" "sk-...")
+  ; defun my-get-openrouter-api-key yourself elsewhere for security reasons
+  ;(setenv "OPENROUTER_API_KEY" (my-get-openrouter-api-key))
+  :custom
+  ; See the Configuration section below
+  (aidermacs-default-chat-mode 'architect)
+  (aidermacs-default-model "ollama_chat/mistral"))
+
+;; Include support for ellama
+(after! ellama
+  ;;:ensure t
+  ;;:bind ("C-c e" . ellama)
+  (map! :map ellama-command-map "C-c e" #'ellama)
+  ;; send last message in chat buffer with C-c C-c
+  :hook (org-ctrl-c-ctrl-c-final . ellama-chat-send-last-message)
+  :init (setopt ellama-auto-scroll t)
+  :config
+  ;; show ellama context in header line in all buffers
+  (ellama-context-header-line-global-mode +1)
+  ;; show ellama session id in header line in all buffers
+  (ellama-session-header-line-global-mode +1))
+
+;; Add key bindings (check if compatible before using)
+;(map! :leader
+;      :desc "vterm" "v" #'vterm
+;      (:prefix-map ("l" . "llm")
+;       :desc "aidermacs" "a" #'aidermacs-transient-menu
+;       :desc "ellama" "e" #'ellama))
