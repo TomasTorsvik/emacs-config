@@ -38,6 +38,13 @@
 ;;(setq doom-theme 'doom-rouge)
 ;;(setq doom-theme 'spacemacs-dark)
 (setq doom-theme 'modus-vivendi)
+;; Specify both a dark and light theme, like so and Doom will choose which one
+;; to load based on your system light/dark setting:
+;;
+;;   (setq doom-theme '(doom-one   . doom-one-light))   ; (DARK . LIGHT)
+;;
+;; If you want more pro-active theme switching based on OS light/dark mode, look
+;; up the `auto-dark' package.
 
 ;; This determines the style of line numbers in effect. If set to `nil', line
 ;; numbers are disabled. For relative line numbers, set this to `relative'.
