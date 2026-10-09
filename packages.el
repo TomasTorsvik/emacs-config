@@ -52,5 +52,5 @@
 ;; Enable spacemacs themes
 (package! spacemacs-theme)
 
-(package! aidermacs)
-(package! ellama)
+;; (package! aidermacs)
+;; (package! ellama)

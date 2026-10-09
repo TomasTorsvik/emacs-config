@@ -156,33 +156,47 @@
   (add-hook 'python-mode-hook 'eglot-ensure)
   (set-eglot-client! 'python-mode '("pylsp")))
 
-;; Include support for aidermacs
-(after! aidermacs
-  ;;:bind (("C-c a" . aidermacs-transient-menu))
-  (map! :map aidermacs-minor-mode-map "C-c a" #'aidermacs-transient-menu)
+;; Include support for ollama using gptl
+;; Add downloaded models to "models" list
+(use-package! gptel
   :config
-  ; Set API_KEY in .bashrc, that will automatically picked up by aider or in elisp
-  ;(setenv "ANTHROPIC_API_KEY" "sk-...")
-  ; defun my-get-openrouter-api-key yourself elsewhere for security reasons
-  ;(setenv "OPENROUTER_API_KEY" (my-get-openrouter-api-key))
-  :custom
-  ; See the Configuration section below
-  (aidermacs-default-chat-mode 'architect)
-  (aidermacs-default-model "ollama_chat/mistral"))
+  ;; Define the Ollama backend
+  (setq gptel-backend
+        (gptel-make-ollama "Ollama"
+          :host "localhost:11434"
+          :stream t
+          :models '(llama3.1:latest llama3.2:latest mistral:latest)))
+  ;; Set Ollama as default provider
+  (setq gptel-model 'llama3.2:latest))
 
-;; Include support for ellama
-(after! ellama
-  ;;:ensure t
-  ;;:bind ("C-c e" . ellama)
-  (map! :map ellama-command-map "C-c e" #'ellama)
-  ;; send last message in chat buffer with C-c C-c
-  :hook (org-ctrl-c-ctrl-c-final . ellama-chat-send-last-message)
-  :init (setopt ellama-auto-scroll t)
-  :config
-  ;; show ellama context in header line in all buffers
-  (ellama-context-header-line-global-mode +1)
-  ;; show ellama session id in header line in all buffers
-  (ellama-session-header-line-global-mode +1))
+
+;; ;; Include support for aidermacs
+;; (after! aidermacs
+;;   ;;:bind (("C-c a" . aidermacs-transient-menu))
+;;   (map! :map aidermacs-minor-mode-map "C-c a" #'aidermacs-transient-menu)
+;;   :config
+;;   ; Set API_KEY in .bashrc, that will automatically picked up by aider or in elisp
+;;   ;(setenv "ANTHROPIC_API_KEY" "sk-...")
+;;   ; defun my-get-openrouter-api-key yourself elsewhere for security reasons
+;;   ;(setenv "OPENROUTER_API_KEY" (my-get-openrouter-api-key))
+;;   :custom
+;;   ; See the Configuration section below
+;;   (aidermacs-default-chat-mode 'architect)
+;;   (aidermacs-default-model "ollama_chat/mistral"))
+
+;; ;; Include support for ellama
+;; (after! ellama
+;;   ;;:ensure t
+;;   ;;:bind ("C-c e" . ellama)
+;;   (map! :map ellama-command-map "C-c e" #'ellama)
+;;   ;; send last message in chat buffer with C-c C-c
+;;   :hook (org-ctrl-c-ctrl-c-final . ellama-chat-send-last-message)
+;;   :init (setopt ellama-auto-scroll t)
+;;   :config
+;;   ;; show ellama context in header line in all buffers
+;;   (ellama-context-header-line-global-mode +1)
+;;   ;; show ellama session id in header line in all buffers
+;;   (ellama-session-header-line-global-mode +1))
 
 ;; Add key bindings (check if compatible before using)
 ;(map! :leader
