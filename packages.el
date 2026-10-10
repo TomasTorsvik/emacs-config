@@ -57,3 +57,6 @@
 
 ;; (package! aidermacs)
 ;; (package! ellama)
+
+;; Use for resize windows
+(package! windresize)

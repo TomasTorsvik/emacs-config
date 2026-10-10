@@ -97,6 +97,12 @@
 (when (fboundp 'windmove-default-keybindings)
   (windmove-default-keybindings 'meta))
 
+;; Resize windows with ctrl + arrow keys
+(use-package! windresize
+  :config
+  (map! :prefix "C-a"
+        "C-r" #'windresize))
+
 ;; Set both icons and text in toolbar
 ;;(setq tool-bar-style 'both)
 ;; Set only icons in toolbar
