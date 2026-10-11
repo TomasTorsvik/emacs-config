@@ -178,7 +178,7 @@
         (gptel-make-ollama "Ollama"
           :host "localhost:11434"
           :stream t
-          :models '(llama3.1:latest llama3.2:latest mistral:latest)))
+          :models '(llama3.1:latest llama3.2:latest mistral:latest qwen3:4b)))
   ;; Set Ollama as default provider
   (setq gptel-model 'llama3.2:latest))
 
