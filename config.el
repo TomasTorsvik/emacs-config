@@ -157,7 +157,11 @@
 
 ;; Configure RSS feed
 (with-eval-after-load 'elfeed-org
-  (setq rmh-elfeed-org-files (list "~/share/org/rss/elfeed.org")))
+  (setq rmh-elfeed-org-files (list "~/share/org/rss/elfeed.org"))
+  ;; Automatically mark entries older than 2 weeks as read
+  (add-hook 'elfeed-new-entry-hook
+            (elfeed-make-tagger :before "2 weeks ago"
+                                :remove 'unread)))
 
 
 ;; Prevent echo area from covering which-key popup (enable if echo area error returns)
