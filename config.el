@@ -154,6 +154,11 @@
 (setenv "WORKON_HOME" "~/miniforge3/envs")
 ;; (pyvenv-workon "emacs_env")
 
+
+;; Configure RSS feed
+(setq rmh-elfeed-org-files (list "~/share/org/rss/elfeed.org"))
+
+
 ;; Prevent echo area from covering which-key popup (enable if echo area error returns)
 ;(defadvice! fix-which-key--show-popup (fn act-popup-dim)
 ;  :around #'which-key--show-popup
