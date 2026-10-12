@@ -156,7 +156,8 @@
 
 
 ;; Configure RSS feed
-(setq rmh-elfeed-org-files (list "~/share/org/rss/elfeed.org"))
+(with-eval-after-load 'elfeed-org
+  (setq rmh-elfeed-org-files (list "~/share/org/rss/elfeed.org")))
 
 
 ;; Prevent echo area from covering which-key popup (enable if echo area error returns)
