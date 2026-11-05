@@ -55,8 +55,12 @@
 ;; Enable spacemacs themes
 (package! spacemacs-theme)
 
+;; AI integration
 ;; (package! aidermacs)
 ;; (package! ellama)
+(package! inheritenv)
+(package! claude-code
+  :recipe (:host github :repo "stevemolitor/claude-code.el"))
 
 ;; Use for resize windows
 (package! windresize)

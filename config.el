@@ -192,6 +192,14 @@
   ;; Set Ollama as default provider
   (setq gptel-model 'llama3.2:latest))
 
+;; Include support for claude-code
+(use-package! claude-code
+    :config
+    (setq claude-code-terminal-backend 'vterm)
+    (claude-code-mode)
+    (map! :leader
+          (:prefix ("o" . "open")
+           :desc "Claude Code menu" "c" #'claude-code-transient)))
 
 ;; ;; Include support for aidermacs
 ;; (after! aidermacs
