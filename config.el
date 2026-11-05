@@ -206,7 +206,7 @@
     (setq claude-code-terminal-backend 'vterm)
     (claude-code-mode)
     (map! :leader
-          (:prefix ("o" . "open")
+          (:prefix "o"  ; use existing "open" prefix
            :desc "Claude Code menu" "c" #'claude-code-transient)))
 
 ;; ;; Include support for aidermacs
