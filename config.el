@@ -187,6 +187,11 @@
   (add-hook 'python-mode-hook 'eglot-ensure)
   (set-eglot-client! 'python-mode '("pylsp")))
 
+;; Eat package config
+(use-package! eat
+  :config
+  (add-hook 'eshell-load-hook #'eat-eshell-mode))
+
 ;; Include support for ollama using gptl
 ;; Add downloaded models to "models" list
 (use-package! gptel
@@ -203,7 +208,8 @@
 ;; Include support for claude-code
 (use-package! claude-code
     :config
-    (setq claude-code-terminal-backend 'vterm)
+    (setq claude-code-program (expand-file-name "~/.local/bin/claude-safe")
+          claude-code-terminal-backend 'eat)
     (claude-code-mode)
     (map! :leader
           (:prefix "o"  ; use existing "open" prefix

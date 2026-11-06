@@ -55,6 +55,9 @@
 ;; Enable spacemacs themes
 (package! spacemacs-theme)
 
+;; Use Eat package
+(package! eat)
+
 ;; AI integration
 ;; (package! aidermacs)
 ;; (package! ellama)
