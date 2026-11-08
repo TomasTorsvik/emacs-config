@@ -192,6 +192,29 @@
   :config
   (add-hook 'eshell-load-hook #'eat-eshell-mode))
 
+
+;; Configure conda support
+(use-package! conda
+  :config
+  ;; Set your anaconda/miniconda installation path
+  (setq conda-anaconda-home (expand-file-name "~/miniforge3/")) ; Change to your conda path
+  (setq conda-env-home-directory (expand-file-name "~/miniforge3/"))
+
+  ;; Enable interactive shell and eshell support if you use them
+  (conda-env-initialize-interactive-shells)
+  (conda-env-initialize-eshell)
+
+  ;; Hook conda into LSP
+  (add-hook 'conda-postactivate-hook
+            (lambda () (lsp-workspace-restart (lsp-find-workspace 'pyright nil))))
+  (add-hook 'conda-postdeactivate-hook
+            (lambda () (lsp-workspace-restart (lsp-find-workspace 'pyright nil))))
+
+  ;; Optional: Auto-activate environments if a project has a configured environment
+  (conda-env-autoactivate-mode t))
+
+
+
 ;; Include support for ollama using gptl
 ;; Add downloaded models to "models" list
 (use-package! gptel

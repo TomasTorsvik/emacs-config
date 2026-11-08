@@ -58,6 +58,10 @@
 ;; Use Eat package
 (package! eat)
 
+;; Use conda package
+(package! conda
+  :recipe (:host github :repo "necaris/conda.el" :branch "main"))
+
 ;; AI integration
 ;; (package! aidermacs)
 ;; (package! ellama)
