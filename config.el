@@ -237,7 +237,7 @@
     (use-package! claude-code
       :config
       (setq claude-code-program claude-program
-            claude-code-terminal-backend 'eat)
+            claude-code-terminal-backend 'vterm)
       (claude-code-mode)
       (map! :leader
             (:prefix "o"  ; use existing "open" prefix
