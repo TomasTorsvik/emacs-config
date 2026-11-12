@@ -236,7 +236,16 @@
   (when (and claude-program (locate-library "claude-code"))
     (use-package! claude-code
       :config
-      (setq claude-code-program claude-program
+      ;; Open in the current window; if it is the only window, split the frame
+      ;; side by side (full height) and open in the new window instead
+      (defun my/claude-code-display-buffer (buffer)
+        (let ((window (if (one-window-p)
+                          (split-window (frame-root-window) nil 'right)
+                        (selected-window))))
+          (set-window-buffer window buffer)
+          window))
+      (setq claude-code-display-window-fn #'my/claude-code-display-buffer
+            claude-code-program claude-program
             claude-code-terminal-backend 'vterm)
       (claude-code-mode)
       (map! :leader
