@@ -131,7 +131,6 @@
 
 ;; Make TRAMP recognize customizations from the ~/.ssh/config file
 (with-eval-after-load 'tramp
-  :config
   (customize-set-variable 'tramp-use-ssh-controlmaster-options nil))
 
 ;; Add file extensions to f90-mode
@@ -147,7 +146,7 @@
               auto-mode-alist))
 
 ;; Add support for NCL files
-(setq auto-mode-alist (cons '("\.ncl$" . ncl-mode) auto-mode-alist))
+(setq auto-mode-alist (cons '("\\.ncl\\'" . ncl-mode) auto-mode-alist))
 (autoload 'ncl-mode "~/.config/doom/emacs-packages/ncl.el")
 
 ;; Enable conda environments from mambaforge
@@ -181,7 +180,6 @@
 
 ;; Add LSP clients
 (with-eval-after-load 'eglot
-  :config
   (add-hook 'f90-mode-hook 'eglot-ensure)
   (add-hook 'fortran-mode-hook 'eglot-ensure)
   (add-hook 'python-mode-hook 'eglot-ensure)
@@ -204,11 +202,13 @@
   (conda-env-initialize-interactive-shells)
   (conda-env-initialize-eshell)
 
-  ;; Hook conda into LSP
-  (add-hook 'conda-postactivate-hook
-            (lambda () (lsp-workspace-restart (lsp-find-workspace 'pyright nil))))
-  (add-hook 'conda-postdeactivate-hook
-            (lambda () (lsp-workspace-restart (lsp-find-workspace 'pyright nil))))
+  ;; Restart the eglot server (pylsp) so it picks up the new environment
+  (defun my/conda-restart-eglot ()
+    (when-let ((server (and (fboundp 'eglot-current-server)
+                            (eglot-current-server))))
+      (eglot-reconnect server)))
+  (add-hook 'conda-postactivate-hook #'my/conda-restart-eglot)
+  (add-hook 'conda-postdeactivate-hook #'my/conda-restart-eglot)
 
   ;; Optional: Auto-activate environments if a project has a configured environment
   (conda-env-autoactivate-mode t))
