@@ -65,9 +65,12 @@
 ;; AI integration
 ;; (package! aidermacs)
 ;; (package! ellama)
-(package! inheritenv)
-(package! claude-code
-  :recipe (:host github :repo "stevemolitor/claude-code.el"))
+;; Only install claude-code.el where claude (or the claude-safe wrapper) exists
+(when (or (file-executable-p (expand-file-name "~/.local/bin/claude-safe"))
+          (executable-find "claude"))
+  (package! inheritenv)
+  (package! claude-code
+    :recipe (:host github :repo "stevemolitor/claude-code.el")))
 
 ;; Use for resize windows
 (package! windresize)

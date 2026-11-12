@@ -228,15 +228,20 @@
   ;; Set Ollama as default provider
   (setq gptel-model 'llama3.2:latest))
 
-;; Include support for claude-code
-(use-package! claude-code
-    :config
-    (setq claude-code-program (expand-file-name "~/.local/bin/claude-safe")
-          claude-code-terminal-backend 'eat)
-    (claude-code-mode)
-    (map! :leader
-          (:prefix "o"  ; use existing "open" prefix
-           :desc "Claude Code menu" "c" #'claude-code-transient)))
+;; Include support for claude-code (only where claude is available)
+;; Prefer the claude-safe sandbox wrapper, fall back to plain claude
+(let ((claude-program
+       (let ((safe (expand-file-name "~/.local/bin/claude-safe")))
+         (if (file-executable-p safe) safe (executable-find "claude")))))
+  (when (and claude-program (locate-library "claude-code"))
+    (use-package! claude-code
+      :config
+      (setq claude-code-program claude-program
+            claude-code-terminal-backend 'eat)
+      (claude-code-mode)
+      (map! :leader
+            (:prefix "o"  ; use existing "open" prefix
+             :desc "Claude Code menu" "c" #'claude-code-transient)))))
 
 ;; ;; Include support for aidermacs
 ;; (after! aidermacs
