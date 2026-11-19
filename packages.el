@@ -52,6 +52,10 @@
 ;; ...Or *all* packages (NOT RECOMMENDED; will likely break things)
 ;; (unpin! t)
 
+;; Disable packages that doom is testing for
+(package! nose :disable t)
+
+
 ;; Enable spacemacs themes
 (package! spacemacs-theme)
 
